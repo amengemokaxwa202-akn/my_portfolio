@@ -1,0 +1,52 @@
+# Virtual Environments
+venv
+venv_*
+.venv
+env
+ENV
+
+# Python Cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Build & Dist
+dist
+build
+*.spec
+
+# Databases & Logs
+*.db
+*.sqlite
+*.log
+*.csv
+
+# Test files
+test_*.py
+*_test.py
+tests/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Flet specific
+.flet
