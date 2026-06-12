@@ -1,25 +1,40 @@
+import logging  
 import flet as ft
+import os
 
 def main(page: ft.Page):
     # ===== PAGE SETUP =====
-    page.title = "Civil Engineering Portfolio"
+    page.title = "Amenge Mokaxwa | Civil Engineering & Metallurgy Portfolio"
     page.theme_mode = "light"
-    page.padding = 20
+    page.padding = 30
     page.scroll = "adaptive"
-    page.bgcolor = "#F5F7FA"
+    page.bgcolor = "#F8FAFC"  
     
     # ===== COLOR THEME =====
-    PRIMARY_COLOR = "#1E3A5F"
-    SECONDARY_COLOR = "#4A90E2"
-    ACCENT_COLOR = "#FF6B35"
+    PRIMARY_COLOR = "#0F172A"    
+    SECONDARY_COLOR = "#2563EB"  
     CARD_BG = "#FFFFFF"
-    TEXT_DARK = "#2C3E50"
-    TEXT_LIGHT = "#7F8C8D"
+    TEXT_DARK = "#1E293B"
+    TEXT_LIGHT = "#64748B"
+    BORDER_COLOR = "#E2E8F0"
     
-    # ===== CONTENT AREA =====
-    content_area = ft.Column(spacing=20)
+    # ===== NAVIGATION BAR (Persistent) =====
+    navbar = ft.Container(
+        content=ft.Row([
+            ft.Text("TECHNICAL PORTFOLIO", size=16, weight="bold", color=PRIMARY_COLOR),
+            ft.Row([
+                ft.TextButton("Home", on_click=lambda e: navigate_to("home")),
+                ft.TextButton("Timeline", on_click=lambda e: navigate_to("timeline")),
+                ft.TextButton("MATLAB", on_click=lambda e: navigate_to("matlab")),
+                ft.TextButton("Blog", on_click=lambda e: navigate_to("blog")),
+                ft.TextButton("GitHub Audit", on_click=lambda e: navigate_to("github")),
+            ], spacing=10),
+        ], alignment="spaceBetween"),
+        padding=ft.Padding.only(bottom=15),
+        border=ft.Border.only(bottom=ft.BorderSide(1, BORDER_COLOR))
+    )
     
-    # ===== NAVIGATION FUNCTION =====
+    # ===== NAVIGATION ROUTER =====
     def navigate_to(section):
         if section == "home":
             show_home()
@@ -31,310 +46,335 @@ def main(page: ft.Page):
             show_blog()
         elif section == "github":
             show_github()
-        page.update()
     
-    # ===== HOME PAGE =====
+    # ===== 1. HOME VIEW =====
     def show_home():
-        content_area.controls = [
-        # Hero Section with Picture
-        ft.Container(
-            content=ft.Row([
-                # Left side - Text
-                ft.Column([
-                    ft.Text("👋 Hello, I'm", size=18, color=TEXT_LIGHT),
-                    ft.Text("Amenge KN Mokaxwa", size=45, weight="bold", color=PRIMARY_COLOR),
-                    ft.Text("3rd Year EXT Civil Engineering Student", size=20, color=SECONDARY_COLOR),
-                    ft.Text("JEDS UNAM", size=16, color=TEXT_LIGHT, italic=True),
-                    ft.Divider(height=2, color=ACCENT_COLOR),
-                    ft.Container(height=10),
-                    ft.Text("Welcome to my portfolio website!", size=16, color=TEXT_DARK),
-                    ft.Text("This site showcases my work in the Computing Programming module.", size=14, color=TEXT_LIGHT),
-                ], expand=True, spacing=10),
-                
-                # Right side - Profile Picture
-                ft.Container(
-                    content=ft.CircleAvatar(
-                        content=ft.Text("👩‍💻", size=40),
-                        color=ft.Colors.WHITE,
-                        bgcolor=SECONDARY_COLOR,
-                        radius=70,
+        page.controls = [
+            navbar,
+            ft.Container(
+                content=ft.Row([
+                    ft.Column([
+                        ft.Text("TECHNICAL PORTFOLIO", size=12, weight="bold", color=SECONDARY_COLOR),
+                        ft.Text("Amenge KN Mokaxwa", size=40, weight="bold", color=PRIMARY_COLOR),
+                        ft.Text("3rd Year Civil Engineering Student (EXT)", size=18, weight="w500", color=TEXT_LIGHT),
+                        ft.Text("JEDS | University of Namibia", size=14, color=TEXT_LIGHT, italic=True),
+                        ft.Container(height=5),
+                        ft.Text(
+                            "Welcome to my technical portfolio. This platform showcases individual contributions, "
+                            "applied computing proficiencies, and foundational engineering documentation.", 
+                            size=15, color=TEXT_DARK, max_lines=3
+                        ),
+                    ], expand=True, spacing=8),
+                    
+                    ft.Container(
+                        content=ft.Image(
+                            src="images/profile.jpeg",  
+                            width=120,
+                            height=120,
+                            fit="cover",
+                            border_radius=60,
+                        ),
+                        padding=10,
                     ),
-                ),
-            ], alignment="center"),
-            padding=40,
-            bgcolor=CARD_BG,
-            border_radius=20,
-        ),
-        
-        # Clickable Stats Cards (FIXED)
-        ft.Row([
-            ft.GestureDetector(
-                content=ft.Card(
+                ], alignment="spaceBetween", vertical_alignment="center"),
+                padding=40,
+                bgcolor=CARD_BG,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=12,
+            ),
+            
+            ft.Row([
+                ft.GestureDetector(
                     content=ft.Container(
                         content=ft.Column([
-                            ft.Text("📚", size=30),
-                            ft.Text("8 MATLAB Courses", size=16, weight="bold"),
-                            ft.Text("Click to view →", size=10, color=SECONDARY_COLOR),
-                        ], horizontal_alignment="center", spacing=5),
+                            ft.Text("MATLAB CORE", size=11, weight="bold", color=TEXT_LIGHT),
+                            ft.Text("8 Courses", size=22, weight="bold", color=PRIMARY_COLOR),
+                            ft.Text("View Certificates →", size=11, color=SECONDARY_COLOR, weight="w500"),
+                        ], spacing=4),
                         padding=20,
-                        width=200,
+                        bgcolor=CARD_BG,
+                        border=ft.Border.all(1, BORDER_COLOR),
+                        border_radius=8,
+                        width=220,
                     ),
+                    on_tap=lambda e: navigate_to("matlab"),
                 ),
-                on_tap=lambda e: navigate_to("matlab"),
-            ),
-            ft.GestureDetector(
-                content=ft.Card(
+                ft.GestureDetector(
                     content=ft.Container(
                         content=ft.Column([
-                            ft.Text("💻", size=30),
-                            ft.Text("4 Projects", size=16, weight="bold"),
-                            ft.Text("Click to view →", size=10, color=SECONDARY_COLOR),
-                        ], horizontal_alignment="center", spacing=5),
+                            ft.Text("PROJECT LOGS", size=11, weight="bold", color=TEXT_LIGHT),
+                            ft.Text("4 Milestones", size=22, weight="bold", color=PRIMARY_COLOR),
+                            ft.Text("View Timeline →", size=11, color=SECONDARY_COLOR, weight="w500"),
+                        ], spacing=4),
                         padding=20,
-                        width=200,
+                        bgcolor=CARD_BG,
+                        border=ft.Border.all(1, BORDER_COLOR),
+                        border_radius=8,
+                        width=220,
                     ),
+                    on_tap=lambda e: navigate_to("timeline"),
                 ),
-                on_tap=lambda e: navigate_to("timeline"),
-            ),
-            ft.GestureDetector(
-                content=ft.Card(
+                ft.GestureDetector(
                     content=ft.Container(
                         content=ft.Column([
-                            ft.Text("🐙", size=30),
-                            ft.Text("15+ Commits", size=16, weight="bold"),
-                            ft.Text("Click to view →", size=10, color=SECONDARY_COLOR),
-                        ], horizontal_alignment="center", spacing=5),
+                            ft.Text("VERSION CONTROL", size=11, weight="bold", color=TEXT_LIGHT),
+                            ft.Text("15+ Commits", size=22, weight="bold", color=PRIMARY_COLOR),
+                            ft.Text("View Evidence →", size=11, color=SECONDARY_COLOR, weight="w500"),
+                        ], spacing=4),
                         padding=20,
-                        width=200,
+                        bgcolor=CARD_BG,
+                        border=ft.Border.all(1, BORDER_COLOR),
+                        border_radius=8,
+                        width=220,
                     ),
+                    on_tap=lambda e: navigate_to("github"),
                 ),
-                on_tap=lambda e: navigate_to("github"),
-            ),
-        ], alignment="center", spacing=20, wrap=True),
-        
-        # About Section
-        ft.Container(
-            content=ft.Column([
-                ft.Text("About This Portfolio", size=24, weight="bold", color=PRIMARY_COLOR),
-                ft.Text("This website serves as my individual portfolio for the Computing Programming module. It documents my journey through MATLAB certification, technical writing, and GitHub collaboration.", size=14),
-                ft.Container(height=10),
-                ft.Text("📌 Key Sections:", weight="bold", size=16),
-                ft.Text("• Project Timeline - Weekly logs of my contributions", size=14),
-                ft.Text("• MATLAB Hub - Proof of 8 completed courses", size=14),
-                ft.Text("• Technical Blog - Engineering concepts with formulas", size=14),
-                ft.Text("• GitHub Evidence - Verifiable commit history", size=14),
-            ], spacing=15),
-            padding=30,
-            bgcolor=CARD_BG,
-            border_radius=20,
-        ),
-    ]
-    page.update()
-    
-    # ===== TIMELINE PAGE =====
-    def show_timeline():
-        content_area.controls = [
-            ft.Text("📅 Project Timeline", size=30, weight="bold", color=PRIMARY_COLOR),
-            ft.Text("My individual contributions to the group project", size=14, color=TEXT_LIGHT),
-            ft.Divider(),
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("Week 1-2: Project Setup", size=18, weight="bold", color=SECONDARY_COLOR),
-                    ft.Text("✓ Created GitHub repository", size=13),
-                    ft.Text("✓ Installed Flet framework", size=13),
-                    ft.Text("✓ Designed portfolio structure", size=13),
-                ]),
-                padding=15,
-                bgcolor=CARD_BG,
-                border_radius=10,
-            ),
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("Week 3-4: Core Development", size=18, weight="bold", color=SECONDARY_COLOR),
-                    ft.Text("✓ Built navigation system", size=13),
-                    ft.Text("✓ Implemented all 5 pages", size=13),
-                    ft.Text("✓ Added responsive layout", size=13),
-                ]),
-                padding=15,
-                bgcolor=CARD_BG,
-                border_radius=10,
-            ),
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("Week 5-6: Content Creation", size=18, weight="bold", color=SECONDARY_COLOR),
-                    ft.Text("✓ Wrote technical blog posts", size=13),
-                    ft.Text("✓ Added mathematical formulas", size=13),
-                    ft.Text("✓ Uploaded MATLAB certificates", size=13),
-                ]),
-                padding=15,
-                bgcolor=CARD_BG,
-                border_radius=10,
-            ),
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("Week 7-8: GitHub & Deployment", size=18, weight="bold", color=SECONDARY_COLOR),
-                    ft.Text("✓ Documented commit history", size=13),
-                    ft.Text("✓ Created pull requests", size=13),
-                    ft.Text("✓ Deployed to GitHub Pages", size=13),
-                ]),
-                padding=15,
-                bgcolor=CARD_BG,
-                border_radius=10,
-            ),
+            ], alignment="center", spacing=20, wrap=True),
         ]
         page.update()
     
-    # ===== MATLAB PAGE =====
-    def show_matlab():
-        courses = ["MATLAB Onramp", "Simulink Onramp", "Machine Learning Onramp", "Deep Learning Onramp", "Image Processing Onramp", "Signal Processing Onramp", "Control Design Onramp", "Stateflow Onramp"]
+    # ===== 2. TIMELINE VIEW =====
+    def show_timeline():
+        timeline_data = [
+            ("Weeks 1 - 2", "Environment Initialization & Architecture Setup", ["Set up local Flet/Python directory structure and base framework.", "Designed dynamic navigation logic for sub-view swapping across sections."]),
+            ("Weeks 3 - 4", "Metallurgical Data Modeling & UI Layout", ["Built Firestore collection schema mappings for mineral sample classification.", "Programmed state logic for input validation within core technician views."]),
+            ("Weeks 5 - 6", "Technical Writing & Mathematical Model Translation", ["Drafted structural performance modules for documentation.", "Embedded analytical formulas for max deflection calculations to match guidelines."]),
+            ("Weeks 7 - 8", "Version Deployment & Peer Reviews", ["Audited open branch code assets and finalized git pull integration tracking.", "Conducted manual security exception handling tests on administrative view bounds."])
+        ]
         
-        course_list = ft.Column(spacing=10)
-        for course in courses:
-            course_list.controls.append(
+        timeline_cards = []
+        for period, title, tasks in timeline_data:
+            task_lines = ft.Column([ft.Text(f"  • {task}", size=13, color=TEXT_DARK) for task in tasks], spacing=4)
+            timeline_cards.append(
                 ft.Container(
-                    content=ft.Row([
-                        ft.Text("✅", size=20),
-                        ft.Text(course, size=14, expand=True),
-                        ft.Text("Completed", size=12, color="green"),
-                    ]),
-                    padding=10,
+                    content=ft.Column([
+                        ft.Row([
+                            ft.Text(period, size=12, weight="bold", color=SECONDARY_COLOR),
+                            ft.Text(f"|  {title}", size=15, weight="bold", color=PRIMARY_COLOR),
+                        ]),
+                        ft.Container(height=2),
+                        task_lines
+                    ], spacing=5),
+                    padding=20,
                     bgcolor=CARD_BG,
+                    border=ft.Border.all(1, BORDER_COLOR),
                     border_radius=8,
                 )
             )
-        
-        content_area.controls = [
-            ft.Text("🏆 MATLAB Achievement Hub", size=30, weight="bold", color=PRIMARY_COLOR),
-            ft.Text("8 Self-Paced Courses from MathWorks Learning Center", size=14, color=TEXT_LIGHT),
-            ft.Divider(),
-            ft.ProgressBar(value=1.0, width=400, color="green"),
-            ft.Text("100% Complete - All 8 Courses Finished!", size=14, color="green", weight="bold"),
-            ft.Container(height=20),
-            ft.Text("📚 Completed Courses:", size=20, weight="bold", color=PRIMARY_COLOR),
-            course_list,
+            
+        page.controls = [
+            navbar,
+            ft.Text("Individual Project Timeline", size=26, weight="bold", color=PRIMARY_COLOR),
+            ft.Text("Chronological index tracing explicit structural development contributions.", size=14, color=TEXT_LIGHT),
+            ft.Divider(color=BORDER_COLOR),
+            ft.Column(timeline_cards, spacing=15)
+        ]
+        page.update()
+
+    # ===== 3. MATLAB HUB VIEW =====
+    def show_matlab():
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        img_absolute_path = os.path.normpath(os.path.join(current_dir, "assets", "images", "matlab_proof.png"))
+
+        def open_certificate_file(e):
+            try:
+                if os.path.exists(img_absolute_path):
+                    os.startfile(img_absolute_path)
+            except Exception as ex:
+                print(f"Error launching file resource: {ex}")
+
+        courses = [
+            "MATLAB Onramp", "Simulink Onramp", "Machine Learning Onramp", 
+            "Deep Learning Onramp", "Image Processing Onramp", "Signal Processing Onramp", 
+            "Control Design Onramp", "Stateflow Onramp"
+        ]
+
+        if os.path.exists(img_absolute_path):
+            certificate_element = ft.Image(
+                src="images/matlab_proof.png",
+                width=150,
+                fit="contain",  
+                border_radius=6,
+            )
+        else:
+            certificate_element = ft.Container(
+                content=ft.Text(
+                    value=f"⚠️ Image file missing in asset folder structure at:\n{img_absolute_path}",
+                    color="red",
+                    weight="bold"
+                ),
+                padding=20
+            )
+
+        page.controls = [
+            navbar,
+            ft.Text(value="MATLAB Academic Achievement Hub", size=26, weight="bold", color=PRIMARY_COLOR),
+            ft.Text(value="MathWorks learning curriculum track validations and credentials.", size=14, color=TEXT_LIGHT),
+            ft.Divider(color=BORDER_COLOR),
+            
             ft.Container(
-                content=ft.Column([
-                    ft.Text("📸 Certificate Screenshots", size=16, weight="bold"),
-                    ft.Text("[Place your MATLAB certificate screenshots here]", size=12, italic=True),
-                ], horizontal_alignment="center"),
+                content=ft.Row(
+                    controls=[
+                        ft.Column(
+                            controls=[
+                                ft.Text(value="CURRICULUM COMPLETION STATUS", size=11, weight="bold", color=TEXT_LIGHT),
+                                ft.Text(value="8 / 8 Courses Verified", size=22, weight="bold", color=PRIMARY_COLOR),
+                            ],
+                            spacing=4,
+                            expand=True
+                        ),
+                        ft.Row(
+                            controls=[
+                                ft.Text(value="100%", size=16, weight="bold", color="#10B981"),
+                                ft.ProgressRing(value=1.0, width=36, height=36, color="#10B981", bgcolor="#E2E8F0"),
+                            ],
+                            spacing=10
+                        )
+                    ],
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER
+                ),
                 padding=20,
-                bgcolor="#FFF3E0",
+                bgcolor="#F0FDF4", 
+                border=ft.Border.all(1, "#DCFCE7"),
                 border_radius=10,
+            ),
+            
+            ft.Container(height=5),
+            ft.Text(value="Credentials Track List", size=16, weight="bold", color=PRIMARY_COLOR),
+            
+            
+            
+            ft.Container(height=10),
+            ft.Text(value="Primary Academic Credential Evidence", size=16, weight="bold", color=PRIMARY_COLOR),
+            
+            ft.Container(
+                content=ft.Column(
+                    controls=[
+                        ft.Text(value="MathWorks Certificate Verification Registry", size=13, weight="w500", color=TEXT_LIGHT),
+                        certificate_element, 
+                    ],
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    spacing=12
+                ),
+                padding=24,
+                bgcolor="#FFFFFF", 
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=12,
             ),
         ]
         page.update()
-    
-    # ===== BLOG PAGE =====
+
+    # ===== 4. BLOG VIEW =====
     def show_blog():
-        content_area.controls = [
-            ft.Text("✍️ Technical Blog", size=30, weight="bold", color=PRIMARY_COLOR),
-            ft.Text("Confidence in Concepts - Engineering Explained", size=14, color=TEXT_LIGHT),
-            ft.Divider(),
-            ft.Card(
-                content=ft.Container(
-                    content=ft.Column([
-                        ft.Text("📐 Beam Deflection in Structural Engineering", size=18, weight="bold"),
-                        ft.Text("Posted: March 2025", size=11, color=TEXT_LIGHT),
-                        ft.Divider(),
-                        ft.Text("The maximum deflection of a simply supported beam under uniform load:", size=13),
-                        ft.Container(
-                            content=ft.Text("δ_max = (5wL⁴) / (384EI)", size=18, weight="bold", italic=True),
-                            padding=15,
-                            bgcolor="#FFF3E0",
-                            border_radius=8,
-                        ),
-                        ft.Text("Where:", size=13, weight="bold"),
-                        ft.Text("• w = uniform load per unit length", size=12),
-                        ft.Text("• L = beam length", size=12),
-                        ft.Text("• E = modulus of elasticity", size=12),
-                        ft.Text("• I = moment of inertia", size=12),
-                    ], spacing=10),
-                    padding=20,
-                ),
-            ),
-            ft.Card(
-                content=ft.Container(
-                    content=ft.Column([
-                        ft.Text("💰 Material Cost Optimization", size=18, weight="bold"),
-                        ft.Text("Posted: March 2025", size=11, color=TEXT_LIGHT),
-                        ft.Divider(),
-                        ft.Text("Total material cost including overheads:", size=13),
-                        ft.Container(
-                            content=ft.Text("Total Cost = Σ(Qᵢ × Pᵢ) + Overheads", size=18, weight="bold", italic=True),
-                            padding=15,
-                            bgcolor="#E8F5E9",
-                            border_radius=8,
-                        ),
-                        ft.Text("Where:", size=13, weight="bold"),
-                        ft.Text("• Qᵢ = Quantity of material i", size=12),
-                        ft.Text("• Pᵢ = Price per unit of material i", size=12),
-                        ft.Text("• n = Number of different materials", size=12),
-                    ], spacing=10),
-                    padding=20,
-                ),
-            ),
-        ]
-        page.update()
-    
-    # ===== GITHUB PAGE =====
-    def show_github():
-        content_area.controls = [
-            ft.Text("🐙 GitHub Evidence", size=30, weight="bold", color=PRIMARY_COLOR),
-            ft.Text("Verifiable individual contributions", size=14, color=TEXT_LIGHT),
-            ft.Divider(),
-            ft.Row([
-                ft.Card(content=ft.Container(content=ft.Column([ft.Text("📊", size=30), ft.Text("15", size=28, weight="bold"), ft.Text("Commits", size=12)], horizontal_alignment="center"), padding=20, width=150)),
-                ft.Card(content=ft.Container(content=ft.Column([ft.Text("🔄", size=30), ft.Text("3", size=28, weight="bold"), ft.Text("Pull Requests", size=12)], horizontal_alignment="center"), padding=20, width=150)),
-                ft.Card(content=ft.Container(content=ft.Column([ft.Text("👥", size=30), ft.Text("5", size=28, weight="bold"), ft.Text("Code Reviews", size=12)], horizontal_alignment="center"), padding=20, width=150)),
-            ], alignment="center", spacing=20, wrap=True),
+        page.controls = [
+            navbar,
+            ft.Text("Technical Blog: Confidence in Concepts", size=26, weight="bold", color=PRIMARY_COLOR),
+            ft.Text("Application of analytical structural mechanics equations.", size=14, color=TEXT_LIGHT),
+            ft.Divider(color=BORDER_COLOR),
+            
             ft.Container(
                 content=ft.Column([
-                    ft.Text("💡 Impact Summary", size=20, weight="bold", color=PRIMARY_COLOR),
-                    ft.Text("✅ Implemented material cost calculator using Σ formula", size=13),
-                    ft.Text("✅ Fixed unit conversion bug affecting beam deflection", size=13),
-                    ft.Text("✅ Added validation for structural load inputs", size=13),
-                    ft.Text("✅ Documented civil engineering modules for team", size=13),
-                ], spacing=10),
-                padding=20,
+                    ft.Text("Structural Mechanics: Beam Deflection Models", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Text("Context: Flexural Analysis under Uniform Distributed Loads (UDL)", size=12, color=TEXT_LIGHT),
+                    ft.Divider(color=BORDER_COLOR),
+                    ft.Text("The structural calculation model matrix evaluates member boundary limits cleanly.", size=14),
+                ], spacing=12),
+                padding=24,
                 bgcolor=CARD_BG,
-                border_radius=10,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=8,
             ),
-            ft.Container(
-                content=ft.Column([
-                    ft.Text("📸 GitHub Screenshots", size=16, weight="bold"),
-                    ft.Text("[Insert commit history screenshot here]", size=12, italic=True),
-                    ft.Text("[Insert pull request logs screenshot here]", size=12, italic=True),
-                ], horizontal_alignment="center", spacing=10),
-                padding=20,
-                bgcolor="#F0F0F0",
-                border_radius=10,
-            ),
-            ft.Text("⚠️ Replace placeholder screenshots with actual GitHub screenshots", size=11, color="red", italic=True),
         ]
         page.update()
     
-    # ===== NAVIGATION BAR =====
-    navbar = ft.Container(
-        content=ft.Row([
-            ft.Text("🚀 My Portfolio", size=22, weight="bold", color=PRIMARY_COLOR),
-            ft.Row([
-                ft.TextButton("Home", on_click=lambda e: navigate_to("home")),
-                ft.TextButton("Timeline", on_click=lambda e: navigate_to("timeline")),
-                ft.TextButton("MATLAB", on_click=lambda e: navigate_to("matlab")),
-                ft.TextButton("Blog", on_click=lambda e: navigate_to("blog")),
-                ft.TextButton("GitHub", on_click=lambda e: navigate_to("github")),
-            ], spacing=20),
-        ], alignment="spaceBetween"),
-        padding=15,
-        bgcolor=CARD_BG,
-    )
+    # ===== 5. GITHUB & EXECUTIVES VIEW =====
+    def show_github():
+        pr_logs = [
+            ("PR #4 - MERGED", "Feature: Integrate Mineral Analysis Database Schema", 
+             "Proposed a pull request to merge individual Firestore collection definitions tracking sample metadata, mineral hardness indexes, and elemental analysis data."),
+            ("PR #2 - MERGED", "Security: Implement System Lockdown Logic for Unauthorized Roles", 
+             "Developed and pushed branch handling administrative toggle settings. This code intercepts illicit read requests when lockdown mode is true.")
+        ]
+        
+        pr_list_controls = []
+        for status, title, summary in pr_logs:
+            pr_list_controls.append(
+                ft.Container(
+                    content=ft.Column([
+                        ft.Row([
+                            ft.Container(ft.Text(status, size=11, color="white", weight="bold"), bgcolor="#10B981" if "MERGED" in status else "#3B82F6", padding=5, border_radius=4),
+                            ft.Text(title, size=14, weight="bold", color=PRIMARY_COLOR),
+                        ], spacing=10),
+                        ft.Text(f"Summary: {summary}", size=13, color=TEXT_DARK),
+                    ], spacing=6),
+                    padding=15,
+                    border=ft.Border.all(1, BORDER_COLOR),
+                    border_radius=6,
+                    bgcolor="#F8FAFC"
+                )
+            )
+
+        page.controls = [
+            navbar,
+            ft.Text("GitHub Evidence & System Documentation", size=26, weight="bold", color=PRIMARY_COLOR),
+            ft.Text("Verifiable version control tracking, branch contributions, and metallurgical problem impact analysis.", size=14, color=TEXT_LIGHT),
+            ft.Divider(color=BORDER_COLOR),
+            
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Engineering Impact Summary", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Text("Project Type: Metallurgy & Mineral Quality Assurance Application", size=12, color=TEXT_LIGHT, italic=True),
+                    ft.Divider(color=BORDER_COLOR),
+                    ft.Text(
+                        "Problem Solved:\n"
+                        "In mining and processing metallurgy operations, lab technicians require real-time validation of mineral assay parameters.\n\n"
+                        "How My Code Solved It:\n"
+                        "I engineered a decoupled analytical dashboard environment using Python/Flet and backend Firestore listeners. "
+                        "By structuring specific state controls, I established an isolated 'Lab Technician Portal' that processes sample metrics cleanly.",
+                        size=14, color=TEXT_DARK
+                    ),
+                ], spacing=10),
+                padding=24,
+                bgcolor=CARD_BG,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=8,
+            ),
+            
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Proposed Pull Request Logs (PRs)", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Column(pr_list_controls, spacing=10)
+                ], spacing=12),
+                padding=24,
+                bgcolor=CARD_BG,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=8,
+            ),
+            
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("Verifiable Commit History Evidence", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Image(
+                        src="images/github_proof.png",  
+                        width=550,
+                        fit="contain",
+                        border_radius=8,
+                    ),
+                ], horizontal_alignment="center", spacing=10),
+                padding=24,
+                bgcolor=CARD_BG,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=8,
+            ),
+        ]
+        page.update()
     
-    # ===== ADD EVERYTHING TO PAGE =====
-    page.add(navbar)
-    page.add(content_area)
-    
-    # Start with home page
+    # ===== INITIAL INITIALIZATION =====
     show_home()
 
-# Run the app
-ft.app(target=main)
+if __name__ == "__main__":
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    assets_path = os.path.join(current_dir, "assets")
+    ft.run(main, assets_dir=assets_path)
+    ft.app(target=main, assets_dir=assets_path, view=ft.AppView.WEB_BROWSER)
