@@ -1,5 +1,6 @@
 import logging  
 import flet as ft
+import flet_video as fv
 import os
 
 def main(page: ft.Page):
@@ -69,10 +70,10 @@ def main(page: ft.Page):
                     ft.Container(
                         content=ft.Image(
                             src="images/profile.jpeg",  
-                            width=120,
-                            height=120,
+                            width=250,
+                            height=250,
                             fit="cover",
-                            border_radius=60,
+                            border_radius=150,
                         ),
                         padding=10,
                     ),
@@ -88,10 +89,10 @@ def main(page: ft.Page):
                     content=ft.Container(
                         content=ft.Column([
                             ft.Text("MATLAB CORE", size=11, weight="bold", color=TEXT_LIGHT),
-                            ft.Text("8 Courses", size=22, weight="bold", color=PRIMARY_COLOR),
+                            ft.Text("7 Courses", size=22, weight="bold", color=PRIMARY_COLOR),
                             ft.Text("View Certificates →", size=11, color=SECONDARY_COLOR, weight="w500"),
                         ], spacing=4),
-                        padding=20,
+                        padding=30,
                         bgcolor=CARD_BG,
                         border=ft.Border.all(1, BORDER_COLOR),
                         border_radius=8,
@@ -106,7 +107,7 @@ def main(page: ft.Page):
                             ft.Text("4 Milestones", size=22, weight="bold", color=PRIMARY_COLOR),
                             ft.Text("View Timeline →", size=11, color=SECONDARY_COLOR, weight="w500"),
                         ], spacing=4),
-                        padding=20,
+                        padding=30,
                         bgcolor=CARD_BG,
                         border=ft.Border.all(1, BORDER_COLOR),
                         border_radius=8,
@@ -121,7 +122,7 @@ def main(page: ft.Page):
                             ft.Text("15+ Commits", size=22, weight="bold", color=PRIMARY_COLOR),
                             ft.Text("View Evidence →", size=11, color=SECONDARY_COLOR, weight="w500"),
                         ], spacing=4),
-                        padding=20,
+                        padding=30,
                         bgcolor=CARD_BG,
                         border=ft.Border.all(1, BORDER_COLOR),
                         border_radius=8,
@@ -176,23 +177,10 @@ def main(page: ft.Page):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         img_absolute_path = os.path.normpath(os.path.join(current_dir, "assets", "images", "matlab_proof.png"))
 
-        def open_certificate_file(e):
-            try:
-                if os.path.exists(img_absolute_path):
-                    os.startfile(img_absolute_path)
-            except Exception as ex:
-                print(f"Error launching file resource: {ex}")
-
-        courses = [
-            "MATLAB Onramp", "Simulink Onramp", "Machine Learning Onramp", 
-            "Deep Learning Onramp", "Image Processing Onramp", "Signal Processing Onramp", 
-            "Control Design Onramp", "Stateflow Onramp"
-        ]
-
-        if os.path.exists(img_absolute_path):
+        if os.path.exists(img_absolute_path) or os.getenv("PORT"):  
             certificate_element = ft.Image(
                 src="images/matlab_proof.png",
-                width=150,
+                width=500,
                 fit="contain",  
                 border_radius=6,
             )
@@ -218,7 +206,7 @@ def main(page: ft.Page):
                         ft.Column(
                             controls=[
                                 ft.Text(value="CURRICULUM COMPLETION STATUS", size=11, weight="bold", color=TEXT_LIGHT),
-                                ft.Text(value="8 / 8 Courses Verified", size=22, weight="bold", color=PRIMARY_COLOR),
+                                ft.Text(value="7 / 7 Courses Verified", size=22, weight="bold", color=PRIMARY_COLOR),
                             ],
                             spacing=4,
                             expand=True
@@ -241,26 +229,26 @@ def main(page: ft.Page):
             ),
             
             ft.Container(height=5),
-            ft.Text(value="Credentials Track List", size=16, weight="bold", color=PRIMARY_COLOR),
-            
-            
-            
-            ft.Container(height=10),
             ft.Text(value="Primary Academic Credential Evidence", size=16, weight="bold", color=PRIMARY_COLOR),
             
-            ft.Container(
-                content=ft.Column(
-                    controls=[
-                        ft.Text(value="MathWorks Certificate Verification Registry", size=13, weight="w500", color=TEXT_LIGHT),
-                        certificate_element, 
-                    ],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    spacing=12
-                ),
-                padding=24,
-                bgcolor="#FFFFFF", 
-                border=ft.Border.all(1, BORDER_COLOR),
-                border_radius=12,
+            ft.Row(
+                controls=[
+                    ft.Container(
+                        content=ft.Column(
+                            controls=[
+                                ft.Text(value="MathWorks Certificate Verification Registry", size=13, weight="w500", color=TEXT_LIGHT),
+                                certificate_element, 
+                            ],
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                            spacing=12
+                        ),
+                        padding=24,
+                        bgcolor="#FFFFFF", 
+                        border=ft.Border.all(1, BORDER_COLOR),
+                        border_radius=12,
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.CENTER
             ),
         ]
         page.update()
@@ -285,16 +273,52 @@ def main(page: ft.Page):
                 border=ft.Border.all(1, BORDER_COLOR),
                 border_radius=8,
             ),
+            
+            # UPDATED: Replaced legacy HTML5 view with native flet_video player implementation
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("System Walkthrough Integration & Technical Video Demonstration", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Text("Video proof showing dynamic operational layouts and frontend route parsing.", size=12, color=TEXT_LIGHT),
+                    ft.Divider(color=BORDER_COLOR),
+                    
+                    fv.Video(
+                        playlist=[
+                            fv.VideoMedia("videos/demo.mp4")
+                        ],
+                        expand=True
+                    ),
+                ], horizontal_alignment="center", spacing=15),
+                padding=24,
+                bgcolor=CARD_BG,
+                border=ft.Border.all(1, BORDER_COLOR),
+                border_radius=8,
+                height=400
+            ),
         ]
         page.update()
     
-    # ===== 5. GITHUB & EXECUTIVES VIEW =====
+    # ===== 5. GITHUB VIEW =====
     def show_github():
         pr_logs = [
-            ("PR #4 - MERGED", "Feature: Integrate Mineral Analysis Database Schema", 
-             "Proposed a pull request to merge individual Firestore collection definitions tracking sample metadata, mineral hardness indexes, and elemental analysis data."),
-            ("PR #2 - MERGED", "Security: Implement System Lockdown Logic for Unauthorized Roles", 
-             "Developed and pushed branch handling administrative toggle settings. This code intercepts illicit read requests when lockdown mode is true.")
+            ("COMMIT", "Full EM-Lab code with Login and Signup screens", "Initial structural push translating the authentication portal layouts for user entry views."),
+            ("COMMIT", "Dashboard converted from general dashboard to dynamic dashboard that pro…", "Converted layout states from static elements to responsive data hooks tracking active states."),
+            ("COMMIT", "feat: add role-based dashboard and profile screen", "Implements dynamic visibility toggles checking authorization parameters to render custom lab views."),
+            ("COMMIT", "feat: implement Firebase Auth and Firestore user registration", "Wires up backend connection strings to pass user payloads safely over SSL into target cloud collections."),
+            ("COMMIT", "feat: implement multi-user registration flow for Admin dashboard", "Allows administrative level roles to provision secondary workspace credentials efficiently."),
+            ("COMMIT", "style: update container background color to #1A1A2E", "Applied updated darkness layout values matching the team's visual style specification sheets."),
+            ("COMMIT", "final: pre-pull commit of unified app structure", "Saves local workspace parameters before triggering remote repository sync operations."),
+            ("COMMIT", "feat: implement auth persistence with AsyncStorage and session listener", "Tracks user token lifecycles to prevent unexpected app logouts between routine application restarts."),
+            ("COMMIT", "refactor: consolidate project to root App.js and remove old src structur…", "Consolidated project directories down into root components. NOTE: This structure was an initial mistake; bundling everything into App.js created scalability bottlenecks, forcing us to later break it down back into modular files."),
+            ("COMMIT", "feat: add password reset functionality to user profile", "Adds self-service account recovery triggers for automated credential reset dispatches."),
+            ("COMMIT", "fix: implement safe firebase initialization and forgot password logic", "Patches race-conditions preventing backend context initialization at execution load limits."),
+            ("COMMIT", "fix: stabilize auth persistence and resolve redirect loop", "Trims routing loop logic flags that were misfiring inside state checking modules."),
+            ("COMMIT", "chore: initialize firebase config and implement isReady loading state", "Configures network endpoints and anchors application execution states until initial handshakes pass."),
+            ("COMMIT", "feat: finalize auth architecture and registration workflows", "Locks in secure user authentication boundaries and structural sign-up routes."),
+            ("COMMIT", "feat: staff registration system is fully operational and authenticated", "Finalizes individual sign-up security criteria for live laboratory staff verification."),
+            ("COMMIT", "fix: migrate ViewSamplesScreen to sampleCard styles, add sampleSource an…", "Standardizes cross-component layout constraints to use shared UI card dictionaries seamlessly."),
+            ("COMMIT", "Bug Fix — displayId wins fallback, should use sampleId first", "Corrects an evaluation oversight by forcing the key parser to fetch unique sample IDs before string backups."),
+            ("COMMIT", "Bug Fix — wrong variable name, sample → selectedSample", "Corrects a scoping variable assignment typo that was breaking rendering properties inside sub-panels."),
+            ("COMMIT", "fix: retain samples in assay history after furnace operator begins melt …", "Patches state tracking matrices to lock assay data references securely even when processing tasks begin downstream.")
         ]
         
         pr_list_controls = []
@@ -303,7 +327,7 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column([
                         ft.Row([
-                            ft.Container(ft.Text(status, size=11, color="white", weight="bold"), bgcolor="#10B981" if "MERGED" in status else "#3B82F6", padding=5, border_radius=4),
+                            ft.Container(ft.Text(status, size=11, color="white", weight="bold"), bgcolor="#3B82F6", padding=5, border_radius=4),
                             ft.Text(title, size=14, weight="bold", color=PRIMARY_COLOR),
                         ], spacing=10),
                         ft.Text(f"Summary: {summary}", size=13, color=TEXT_DARK),
@@ -361,7 +385,7 @@ def main(page: ft.Page):
                         fit="contain",
                         border_radius=8,
                     ),
-                ], horizontal_alignment="center", spacing=10),
+                ], horizontal_alignment="center", spacing=15),
                 padding=24,
                 bgcolor=CARD_BG,
                 border=ft.Border.all(1, BORDER_COLOR),
@@ -374,7 +398,13 @@ def main(page: ft.Page):
     show_home()
 
 if __name__ == "__main__":
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    assets_path = os.path.join(current_dir, "assets")
-    ft.run(main, assets_dir=assets_path)
-    ft.app(target=main, assets_dir=assets_path, view=ft.AppView.WEB_BROWSER)
+    server_port = int(os.getenv("PORT", 8000))
+    app_host = "0.0.0.0" if os.getenv("PORT") else "127.0.0.1"
+    
+    ft.run(
+        main, 
+        assets_dir="assets", 
+        view=ft.AppView.WEB_BROWSER,
+        host=app_host,
+        port=server_port
+    )
