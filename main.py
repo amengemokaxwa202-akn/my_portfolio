@@ -137,10 +137,11 @@ def main(page: ft.Page):
     # ===== 2. TIMELINE VIEW =====
     def show_timeline():
         timeline_data = [
-            ("Weeks 1 - 2", "Environment Initialization & Architecture Setup", ["Set up local Flet/Python directory structure and base framework.", "Designed dynamic navigation logic for sub-view swapping across sections."]),
-            ("Weeks 3 - 4", "Metallurgical Data Modeling & UI Layout", ["Built Firestore collection schema mappings for mineral sample classification.", "Programmed state logic for input validation within core technician views."]),
-            ("Weeks 5 - 6", "Technical Writing & Mathematical Model Translation", ["Drafted structural performance modules for documentation.", "Embedded analytical formulas for max deflection calculations to match guidelines."]),
-            ("Weeks 7 - 8", "Version Deployment & Peer Reviews", ["Audited open branch code assets and finalized git pull integration tracking.", "Conducted manual security exception handling tests on administrative view bounds."])
+            ("Weeks 1 - 3", "Architecture Setup", ["Initialized Firebase configuration for the project.", "Unified the project structure and base framework."]),
+            ("Weeks 4 - 6", "Auth System Development", ["Implemented multi-user registration flow.", "Integrated session persistence using AsyncStorage for secure login."]),
+            ("Weeks 7 - 9", "Codebase Refactoring", ["Assisted in the effort to break down the massive App.js into modular components.", "Restructured the app to significantly improve scalability and team maintainability."]),
+            ("Weeks 10 - 12", "System Stabilization", ["Participated in redirect loops and fixed variable naming bugs.", "Ensured sample history retention for assay tracking."]),
+            ("Weeks 13+", "Finalization", ["Implemented password reset functionality.", "Finalized role-based dashboard routing for dynamic user access."])
         ]
         
         timeline_cards = []
@@ -263,10 +264,12 @@ def main(page: ft.Page):
             
             ft.Container(
                 content=ft.Column([
-                    ft.Text("Structural Mechanics: Beam Deflection Models", size=18, weight="bold", color=PRIMARY_COLOR),
-                    ft.Text("Context: Flexural Analysis under Uniform Distributed Loads (UDL)", size=12, color=TEXT_LIGHT),
+                    ft.Text("Building a Scalable, Multi-Tenant Architecture", size=18, weight="bold", color=PRIMARY_COLOR),
+                    ft.Text("Context: Moving from monolithic App.js to modular React Native structures", size=12, color=TEXT_LIGHT),
                     ft.Divider(color=BORDER_COLOR),
-                    ft.Text("The structural calculation model matrix evaluates member boundary limits cleanly.", size=14),
+                    ft.Text("1. Architecture: I transitioned the codebase from a single App.js file to modular components to improve scalability and maintainability.", size=14),
+                    ft.Text("2. Authentication: Implemented Firebase Auth with AsyncStorage for session persistence, ensuring seamless role-based routing.", size=14),
+                    ft.Text("3. Data Integrity: Stabilized assay history by resolving variable naming conflicts and implementing logical fallbacks for sample identification.", size=14),
                 ], spacing=12),
                 padding=24,
                 bgcolor=CARD_BG,
